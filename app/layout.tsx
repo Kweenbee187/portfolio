@@ -1,24 +1,22 @@
-import "./globals.css"
-import { ThemeProvider } from "next-themes"
-import dynamic from "next/dynamic"
-import Navbar from "@/components/Navbar"
-import PageTransition from "@/components/PageTransition"
+import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import Navbar from "@/components/Navbar";
+import PageTransition from "@/components/PageTransition";
 
-const Background = dynamic(() => import("@/components/Background"), {
-  ssr: false,
-})
+// ✅ Use the actual Background component that contains your animations
+import Background from "@/components/Background";
 
 export const metadata = {
   title: "Sneha Chakraborty – AI Ethics",
   description: "Portfolio of Sneha Chakraborty, AI Ethicist & Security Researcher",
-}
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="relative overflow-x-hidden">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          
+
           {/* Background Animation */}
           <Background />
 
@@ -36,5 +34,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

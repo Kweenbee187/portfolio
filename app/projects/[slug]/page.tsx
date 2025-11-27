@@ -2,18 +2,37 @@ import { client } from "@/sanity/client";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 
-export default async function ProjectDetailsPage({ params }: any) {
-  const { slug } = params;
+// Pre-generate all project slugs
+export async function generateStaticParams() {
+  const slugs = await client.fetch(`*[_type=="project"].slug.current`);
+  return slugs.map((slug: string) => ({ slug }));
+}
+
+export default async function ProjectDetailsPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  // NEXT.JS 16 FIX — unwrap params
+  const { slug } = await params;
+
+  if (!slug) {
+    return (
+      <div className="text-center py-40 text-3xl">
+        <p>Invalid project URL — missing slug.</p>
+      </div>
+    );
+  }
 
   const project = await client.fetch(
     `
-    *[_type == "project" && slug.current == $slug][0]{
-      title,
-      description,
-      details,
-      "imageUrl": image.asset->url
-    }
-  `,
+      *[_type == "project" && slug.current == $slug][0]{
+        title,
+        description,
+        details,
+        "imageUrl": image.asset->url
+      }
+    `,
     { slug }
   );
 
@@ -42,14 +61,21 @@ export default async function ProjectDetailsPage({ params }: any) {
         />
       )}
 
-      {/* Short Description */}
-      <p className="text-xl text-gray-300 mb-6">{project.description}</p>
+      {/* Description */}
+      {project.description && (
+        <p className="text-xl text-gray-300 mb-6">{project.description}</p>
+      )}
 
       {/* Detailed Content */}
-      <div className="prose prose-invert text-lg leading-relaxed">
-        <PortableText value={project.details} />
-      </div>
-
+      {project.details ? (
+        <div className="prose prose-invert text-lg leading-relaxed">
+          <PortableText value={project.details} />
+        </div>
+      ) : (
+        <p className="text-gray-400 text-lg">
+          No additional details available.
+        </p>
+      )}
     </div>
   );
 }

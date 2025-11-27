@@ -11,7 +11,11 @@ export default async function ProjectsPage() {
       title,
       slug,
       description,
-      image
+      image {
+        asset->{
+          url
+        }
+      }
     }
   `)
 
@@ -26,7 +30,8 @@ export default async function ProjectsPage() {
             href={`/projects/${project.slug.current}`}
             className="block bg-white/10 border border-white/20 rounded-2xl p-5 hover:bg-white/20 transition-all duration-300 hover:scale-[1.02]"
           >
-            {project.image && (
+            {/* SAFE IMAGE CHECK */}
+            {project.image?.asset?.url && (
               <div className="w-full h-48 relative mb-4 rounded-xl overflow-hidden">
                 <Image
                   src={project.image.asset.url}

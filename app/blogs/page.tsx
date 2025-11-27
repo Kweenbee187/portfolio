@@ -15,10 +15,7 @@ export default async function BlogsPage() {
 
   return (
     <div className="max-w-5xl mx-auto py-24 px-6">
-      
-      <h1 className="text-6xl font-extrabold mb-12 text-white">
-        Blogs
-      </h1>
+      <h1 className="text-6xl font-extrabold mb-12 text-white">Blogs</h1>
 
       <div className="space-y-8">
         {blogs.map((blog: any) => (
