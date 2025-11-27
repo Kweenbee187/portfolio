@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback } from "react";
 import Particles from "@tsparticles/react";
+import { useCallback } from "react";
 import { loadSlim } from "@tsparticles/slim";
 import type { Engine } from "@tsparticles/engine";
 
@@ -12,23 +12,15 @@ export default function Background() {
 
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none">
+      
+      {/* GRADIENT BACKGROUND */}
+      <div className="absolute inset-0 animated-bg"></div>
 
-      {/* Animated gradient background */}
-      <div
-        className="
-          absolute inset-0 
-          opacity-60 
-          animate-gradient
-          bg-gradient-to-r 
-          from-black via-blue-900 to-blue-600 
-          blur-3xl
-        "
-      />
-
-      {/* Particle layer */}
+      {/* PARTICLES */}
       <Particles
         id="tsparticles"
-        init={particlesInit}
+        particlesLoaded={() => {}}
+        init={particlesInit}  // ← Valid in Vercel when using loadSlim
         options={{
           fullScreen: false,
           particles: {
