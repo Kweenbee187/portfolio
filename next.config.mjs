@@ -18,11 +18,8 @@ const nextConfig = {
     ],
   },
 
-  // Prevent build crash from optional dependencies
-  webpack: (config) => {
-    config.externals.push("canvas");
-    return config;
-  },
+  // Required for Next.js 16 (Fixes Vercel build error)
+  turbopack: {},
 };
 
 export default withMDX(nextConfig);
